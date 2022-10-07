@@ -26,8 +26,8 @@ public class EventServiceImpl implements EventService {
     private final EventRepository eventRepository;
     private final EventMaper eventMaper;
     private final EventClient eventClient;
-    private final static LocalDateTime START_DATE = LocalDateTime.of(2000, 01, 01, 01, 01, 01);
-    private final static LocalDateTime END_DATE = LocalDateTime.of(2100, 01, 01, 01, 01, 01);
+    private final LocalDateTime startDate = LocalDateTime.of(2000, 01, 01, 01, 01, 01);
+    private final LocalDateTime endDate = LocalDateTime.of(2100, 01, 01, 01, 01, 01);
 
 
     @Override
@@ -68,7 +68,7 @@ public class EventServiceImpl implements EventService {
         Event event = eventRepository.findEventByIdAndState(id, State.PUBLISHED)
                 .orElseThrow(() -> new NotFoundException("Событие не найдено"));
         eventClient.postStat("ewm-main-service", request.getRequestURI(), request.getRemoteAddr());
-        ResponseEntity<List<ViewStats>> resp = eventClient.getStats(START_DATE, END_DATE,
+        ResponseEntity<List<ViewStats>> resp = eventClient.getStats(startDate, endDate,
                 request.getRequestURI());
         List<ViewStats> viewStats = resp.getBody();
         int views = viewStats.stream()
