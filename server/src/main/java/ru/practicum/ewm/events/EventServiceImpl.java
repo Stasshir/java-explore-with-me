@@ -26,8 +26,8 @@ public class EventServiceImpl implements EventService {
     private final EventRepository eventRepository;
     private final EventMaper eventMaper;
     private final EventClient eventClient;
-    private final LocalDateTime START_DATE = LocalDateTime.of(2000, 01, 01, 01, 01, 01);
-    private final LocalDateTime END_DATE = LocalDateTime.of(2100, 01, 01, 01, 01, 01);
+    private final static LocalDateTime START_DATE = LocalDateTime.of(2000, 01, 01, 01, 01, 01);
+    private final static LocalDateTime END_DATE = LocalDateTime.of(2100, 01, 01, 01, 01, 01);
 
 
     @Override

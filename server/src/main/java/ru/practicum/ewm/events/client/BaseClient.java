@@ -35,18 +35,18 @@ public class BaseClient {
         var type = new ParameterizedTypeReference<List<ViewStats>>() {
         };
 
-        ResponseEntity<List<ViewStats>> EwmStatResponse;
+        ResponseEntity<List<ViewStats>> ewmStatResponse;
         try {
             if (parameters != null) {
-                EwmStatResponse = rest.exchange(path, method, requestEntity, type, parameters);
+                ewmStatResponse = rest.exchange(path, method, requestEntity, type, parameters);
             } else {
-                EwmStatResponse = rest.exchange(path, method, requestEntity, type);
+                ewmStatResponse = rest.exchange(path, method, requestEntity, type);
             }
         } catch (HttpStatusCodeException e) {
             return ResponseEntity.status(e.getStatusCode()).body(null);
             //e.getResponseBodyAsByteArray());
         }
-        return prepareGatewayResponse(EwmStatResponse);
+        return prepareGatewayResponse(ewmStatResponse);
     }
 
     private HttpHeaders defaultHeaders() {
