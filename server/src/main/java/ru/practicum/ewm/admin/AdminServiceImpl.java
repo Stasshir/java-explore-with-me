@@ -90,10 +90,15 @@ public class AdminServiceImpl implements AdminService {
     public EventFullDto publishEvent(int eventId) {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new NotFoundException("Событие не найдено"));
-        if (event.getState() != State.PENDING)
+        if (event.getState() != State.PENDING) {
             throw new ValidateException("Событие должно быть в статусе ожидания");
-        if (event.getEventDate().isBefore(LocalDateTime.now().plusHours(1)))
+        }
+        if (event.getEventDate() == null) {
+            throw new ValidateException("Невозможно опубликовать событие без соответствующей даты");
+        }
+        if (event.getEventDate().isBefore(LocalDateTime.now().plusHours(1))) {
             throw new ValidateException("Дата начала события должна быть не ранее чем за час от даты публикации.");
+        }
         event.setState(State.PUBLISHED);
         event.setPublishedOn(LocalDateTime.now());
         return eventMaper.toEventFullDto(eventRepository.save(event));
@@ -103,8 +108,9 @@ public class AdminServiceImpl implements AdminService {
     public EventFullDto rejectEvent(int eventId) {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new NotFoundException("Событие не найдено"));
-        if (event.getState() == State.PUBLISHED)
+        if (event.getState() == State.PUBLISHED) {
             throw new ValidateException("Событие не должно быть опубликовано");
+        }
         event.setState(State.CANCELED);
         return eventMaper.toEventFullDto(eventRepository.save(event));
     }
@@ -173,11 +179,11 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public List<EventFullDto> findEvents(int[] users, String[] states, int[] categories,
                                          String rangeStart, String rangeEnd, int from, int size) {
-        Pageable p = PageRequest.of(from, size);
+        Pageable pageable = PageRequest.of(from, size);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime start = LocalDateTime.parse(rangeStart, formatter);
         LocalDateTime end = LocalDateTime.parse(rangeEnd, formatter);
-        Page<Event> events = eventRepository.findEvents(users, states, categories, start, end, p);
+        Page<Event> events = eventRepository.findEvents(users, states, categories, start, end, pageable);
         return events.stream().map(eventMaper::toEventFullDto)
                 .collect(Collectors.toList());
     }

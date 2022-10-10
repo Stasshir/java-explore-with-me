@@ -1,15 +1,13 @@
 package ru.practicum.ewm.compilation;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ru.practicum.ewm.events.Event;
 
 import javax.persistence.*;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,14 +19,13 @@ public class Compilation {
     private int id;
     @Column
     private boolean pinned;
-    @Column
+    @Column(length = 500)
     private String title;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "comp_events",
             joinColumns = @JoinColumn(name = "event_id"),
             inverseJoinColumns = @JoinColumn(name = "comp_id"))
-//@ManyToMany(mappedBy = "compilations")
     private Set<Event> events;
 
 

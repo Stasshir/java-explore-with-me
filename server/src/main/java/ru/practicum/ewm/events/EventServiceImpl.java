@@ -37,7 +37,8 @@ public class EventServiceImpl implements EventService {
         eventClient.postStat("ewm-main-service", request.getRequestURI(), request.getRemoteAddr());
         LocalDateTime start;
         LocalDateTime end;
-        if (rangeStart.equals("") && rangeEnd.equals("")) {
+        if ((rangeStart == null || rangeStart.equals("")) &&
+                (rangeEnd == null || rangeEnd.equals(""))) {
             start = LocalDateTime.now();
             end = LocalDateTime.MAX;
         } else {
@@ -45,21 +46,22 @@ public class EventServiceImpl implements EventService {
             start = LocalDateTime.parse(rangeStart, formatter);
             end = LocalDateTime.parse(rangeEnd, formatter);
         }
-        Pageable p = PageRequest.of(from, size);
+        Pageable pageable = PageRequest.of(from, size);
         text = "%" + text + "%";
-        List<Event> events = eventRepository.getEvents(text, categories, paid, start, end, p).stream().collect(Collectors.toList());
-        if (onlyAvailable)
+        List<Event> events = eventRepository.getEvents(text, categories, paid, start, end, pageable).stream().collect(Collectors.toList());
+        if (onlyAvailable) {
             events = events.stream()
                     .filter(event -> event.getConfirmedRequests() < event.getParticipantLimit())
                     .collect(Collectors.toList());
-
-        if (sort.equals("VIEWS"))
+        }
+        if (sort.equals("VIEWS")) {
             events = events.stream().sorted(Comparator.comparingInt(Event::getViews))
                     .collect(Collectors.toList());
-        else
+        } else {
             events = events.stream()
                     .sorted(Comparator.comparing(Event::getEventDate))
                     .collect(Collectors.toList());
+        }
         return events.stream().map(eventMaper::toEventShortDto).collect(Collectors.toList());
     }
 

@@ -20,8 +20,8 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<CategoryDto> getCategories(int from, int size) {
-        Pageable p = PageRequest.of(from, size);
-        Page<Category> categories = categoryRepository.findAll(p);
+        Pageable pageable = PageRequest.of(from, size);
+        Page<Category> categories = categoryRepository.findAll(pageable);
         return categories.stream().map(categoryMaper::toCategoryDto).collect(Collectors.toList());
     }
 

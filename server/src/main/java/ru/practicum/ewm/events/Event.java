@@ -1,9 +1,6 @@
 package ru.practicum.ewm.events;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ru.practicum.ewm.categories.Category;
 import ru.practicum.ewm.compilation.Compilation;
 import ru.practicum.ewm.events.dto.State;
@@ -18,17 +15,18 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity()
+@Entity
 @Table(name = "events", schema = "public")
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
+    @Column(length = 1000, nullable = false)
     private String annotation;
 
     @ManyToOne()
@@ -41,7 +39,7 @@ public class Event {
     private List<Participation> participationList = new ArrayList<>();
 
     private LocalDateTime created;
-
+    @Column(length = 1000)
     private String description;
 
     @Column(name = "event_date")
@@ -63,7 +61,7 @@ public class Event {
 
     @Column(name = "request_moderation")
     private boolean requestModeration;
-
+    @Column(length = 500)
     private String title;
 
     @Enumerated(EnumType.STRING)
@@ -71,10 +69,6 @@ public class Event {
 
     private int views;
 
-    /*    @ManyToMany
-        @JoinTable(name = "comp_events",
-                joinColumns = @JoinColumn(name = "comp_id"),
-                inverseJoinColumns = @JoinColumn(name = "event_id"))*/
     @ManyToMany(mappedBy = "events")
     private Set<Compilation> compilations;
 

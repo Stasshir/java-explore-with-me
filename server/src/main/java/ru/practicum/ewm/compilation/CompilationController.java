@@ -15,7 +15,7 @@ import java.util.List;
 @RequestMapping(path = "/compilations")
 @RequiredArgsConstructor
 @Slf4j
-public class CompilationControllers {
+public class CompilationController {
 
     private final CompilationService compilationService;
 
@@ -29,7 +29,7 @@ public class CompilationControllers {
 
     @GetMapping("/{compId}")
     CompilationDto getCompilationsById(@PathVariable int compId) {
-        log.info("Запрос на вывод подборок событий по ID получен");
+        log.info("Запрос на вывод подборок событий по ID получен, Id={}", compId);
         return compilationService.getCompilationsById(compId);
     }
 

@@ -15,7 +15,7 @@ import java.util.List;
 @RequestMapping(path = "/categories")
 @RequiredArgsConstructor
 @Slf4j
-public class CategoryControllers {
+public class CategoryController {
 
     private final CategoryService categoryService;
 
@@ -28,7 +28,7 @@ public class CategoryControllers {
 
     @GetMapping("/{catId}")
     CategoryDto getCategoriesById(@PathVariable int catId) {
-        log.info("Запрос на вывод категорий по ID получен");
+        log.info("Запрос на вывод категорий по ID получен, ID={}", catId);
         return categoryService.getCategoriesById(catId);
     }
 

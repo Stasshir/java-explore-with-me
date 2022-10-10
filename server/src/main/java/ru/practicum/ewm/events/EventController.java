@@ -18,7 +18,7 @@ import java.util.List;
 @RequestMapping(path = "/events")
 @RequiredArgsConstructor
 @Slf4j
-public class EventControllers {
+public class EventController {
 
     private final EventService eventService;
 
@@ -34,14 +34,14 @@ public class EventControllers {
                                   @RequestParam(defaultValue = "10") @Positive int size,
                                   HttpServletRequest request) {
 
-        log.info("Запрос на поиск событий получен");
+        log.info("Запрос на поиск событий получен, catId={}, text={}", categories, text);
         return eventService.getEvents(text, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort,
                 from, size, request);
     }
 
     @GetMapping("/{id}")
     EventFullDto getEventsById(@PathVariable int id, HttpServletRequest request) {
-        log.info("Запрос на поиск событий по ID получен");
+        log.info("Запрос на поиск событий по ID получен, Id={}", id);
         return eventService.getEventById(id, request);
     }
 

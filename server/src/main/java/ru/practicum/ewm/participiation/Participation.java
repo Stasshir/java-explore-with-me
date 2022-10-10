@@ -1,9 +1,6 @@
 package ru.practicum.ewm.participiation;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ru.practicum.ewm.events.Event;
 import ru.practicum.ewm.participiation.dto.Status;
 import ru.practicum.ewm.user.User;
@@ -11,7 +8,8 @@ import ru.practicum.ewm.user.User;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
