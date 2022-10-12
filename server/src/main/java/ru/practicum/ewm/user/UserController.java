@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.ewm.Comments.dto.CommentDto;
 import ru.practicum.ewm.events.dto.EventFullDto;
 import ru.practicum.ewm.events.dto.EventShortDto;
 import ru.practicum.ewm.events.dto.NewEventDto;
@@ -116,6 +117,40 @@ public class UserController {
                                                                        @PathVariable int requestId) {
         log.info("Запрос на отмену заявки c ID на участие в событии получен, ID={}", requestId);
         return userService.cancelRequestsByUserToParticipation(userId, requestId);
+    }
+
+    //Добавление комментария
+    @PostMapping("/comments/{userId}/{eventId}")
+    public CommentDto addComments(@PathVariable int userId,
+                                  @PathVariable int eventId,
+                                  @RequestBody CommentDto commentDto) {
+        log.info("Запрос на добавление комментария получен, ID={}", userId);
+        return userService.addComment(eventId, userId, commentDto);
+    }
+
+    @DeleteMapping("/comments/{commentId}")
+    public void deleteComments(@PathVariable int commentId) {
+        log.info("Запрос на удаление комментария получен, ID={}", commentId);
+        userService.deleteComment(commentId);
+    }
+
+    @PatchMapping("/comments/{commentId}")
+    public CommentDto updateComments(@PathVariable int commentId,
+                                     @RequestBody CommentDto commentDto) {
+        log.info("Запрос на редактирование комментария получен, ID={}", commentId);
+        return userService.updateComment(commentId, commentDto);
+    }
+
+    @GetMapping("/comments/{eventId}")
+    public List<CommentDto> getAllCommentsByEvent(@PathVariable int eventId) {
+        log.info("Запрос на вывод комментариев к событию с ID получен, ID={}", eventId);
+        return userService.getAllCommentsByEvents(eventId);
+    }
+
+    @GetMapping("/comments")
+    public List<CommentDto> getAllCommentsByUser(@RequestParam int userId) {
+        log.info("Запрос на вывод комментариев пользователя с ID получен, ID={}", userId);
+        return userService.getAllCommentsByUser(userId);
     }
 }
 

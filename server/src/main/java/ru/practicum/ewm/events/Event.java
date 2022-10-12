@@ -1,6 +1,7 @@
 package ru.practicum.ewm.events;
 
 import lombok.*;
+import ru.practicum.ewm.Comments.Comment;
 import ru.practicum.ewm.categories.Category;
 import ru.practicum.ewm.compilation.Compilation;
 import ru.practicum.ewm.events.dto.State;
@@ -35,7 +36,6 @@ public class Event {
 
     @OneToMany()
     @JoinColumn(name = "event_id")
-    // @OneToMany(mappedBy = "participation")
     private List<Participation> participationList = new ArrayList<>();
 
     private LocalDateTime created;
@@ -71,6 +71,10 @@ public class Event {
 
     @ManyToMany(mappedBy = "events")
     private Set<Compilation> compilations;
+
+    @OneToMany
+    @JoinColumn(name = "event_id")
+    private Set<Comment> comments;
 
     //возвращает количество одобренных заявок
     public int getConfirmedRequests() {

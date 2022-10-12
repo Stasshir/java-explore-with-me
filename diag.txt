@@ -1,0 +1,64 @@
+//// -- LEVEL 1
+//// -- Schemas, Tables and References
+
+// Creating tables
+// You can define the tables with full schema names
+Table Events {
+  id int [pk, increment]
+  category_id int
+  annotation varchar
+  created timestamp
+  description VARCHAR
+    event_date TIMESTAMP
+    initiator_id BIGINT
+    lat real
+    lon real
+    paid BOOLEAN
+    participant_limit BIGINT
+    published_on TIMESTAMP
+    request_moderation BOOLEAN
+    title VARCHAR
+    state VARCHAR
+    views BIGINT
+  }
+
+Table Users {
+  id int [pk, increment]
+    name VARCHAR
+    email VARCHAR
+  }
+
+Table Category {
+  id int [pk, increment]
+    name VARCHAR
+  }
+  
+Table Participation {
+  id int [pk, increment]
+    created TIMESTAMP
+    event_id BIGINT
+    requester_id BIGINT
+    status VARCHAR
+  }
+  
+Table Compilation {
+  id int [pk, increment]
+    pinned BOOLEAN
+    title VARCHAR 
+    }
+    
+Table Comp_events {
+    comp_id BIGINT
+    event_id BIGINT
+    }
+
+
+Ref: "Users"."id" < "Events"."initiator_id"
+
+Ref: "Category"."id" < "Events"."category_id"
+
+Ref: "Events"."id" < "Participation"."event_id"
+
+Ref: "Events"."id" < "Comp_events"."event_id"
+
+Ref: "Compilation"."id" < "Comp_events"."comp_id"
