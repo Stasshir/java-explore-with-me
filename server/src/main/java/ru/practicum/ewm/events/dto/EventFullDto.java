@@ -4,10 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.practicum.ewm.Comments.Comment;
 import ru.practicum.ewm.categories.dto.CategoryDto;
 import ru.practicum.ewm.user.dto.UserShortDto;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Data
 @Builder
@@ -30,4 +32,5 @@ public class EventFullDto {
     private String title;
     private State state;
     private int views;
+    private Set<Comment> comments;
 }
